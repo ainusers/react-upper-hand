@@ -4,7 +4,7 @@ import './App.css';
 import Componet_Table from './component/component';
 import Prop_Table from './prop/prop';
 import State_Table from './state/state';
-import SubmitData from './submit-data/submit-data';
+import Form from './submit-data/submit-data';
 
 function App_1() {
     const name = '憨 憨'
@@ -60,25 +60,56 @@ class App_2 extends Component{
 }
 
 // submit-data
-class App extends Component{
+class App_3 extends Component{
     state = {
-        characters: []
+        characters: [],
     }
     handleSubmit = character => {
         this.setState({ characters: [...this.state.characters, character] })
     }
-    render() {
+    // state中移除对象方法
+    removeCharacter = index => {
         const { characters } = this.state
+        this.setState({
+            characters: characters.filter((character, i) => {
+                return i !== index
+            }),
+        })
+    }
+    render() {
+        const { characters } = this.state;
         return (
             <div className="container">
                 <State_Table characterData={characters} removeCharacter={this.removeCharacter} />
-                <br/>
-                <hr/>
-                <br/>
-                <SubmitData handleSubmit={this.handleSubmit}/>
+                <Form handleSubmit={this.handleSubmit} />
             </div>
         )
     }
 }
 
+// api (测试不能成功访问)
+class App extends Component {
+    state = {
+        data: [],
+    }
+    // Code is invoked after the component is mounted/inserted into the DOM tree.
+    componentDidMount() {
+        const url = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=Seona+Dancing&format=json&origin=*'
+
+        fetch(url)
+            .then(result => result.json())
+            .then(result => {
+                this.setState({
+                    data: result,
+                })
+            })
+    }
+    render() {
+        const {data} = this.state
+        const result = data.map((entry, index) => {
+            return <li key={index}>{entry}</li>
+        })
+        return <ul>{result}</ul>
+    }
+}
 export default App;

@@ -1,14 +1,7 @@
 import React, { Component } from 'react'
 
 
-const handleChange = event => {
-    const { name, value } = event.target
-    this.setState({
-        [name]: value,
-    })
-}
-
-class SubmitData extends Component {
+export default class Form extends Component {
     constructor(props) {
         super(props)
         this.initialState = {
@@ -16,6 +9,12 @@ class SubmitData extends Component {
             job: '',
         }
         this.state = this.initialState
+    }
+    handleChange = event => {
+        const { name, value } = event.target
+        this.setState({
+            [name]: value,
+        })
     }
     submitForm = () => {
         this.props.handleSubmit(this.state)
@@ -31,7 +30,7 @@ class SubmitData extends Component {
                     name="name"
                     id="name"
                     value={name}
-                    onChange={this.handleChange} /><br/>
+                    onChange={this.handleChange} />
                 <label htmlFor="job">Job</label>
                 <input
                     type="text"
@@ -44,5 +43,3 @@ class SubmitData extends Component {
         );
     }
 }
-
-export default SubmitData;
